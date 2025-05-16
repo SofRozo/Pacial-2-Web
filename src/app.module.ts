@@ -3,16 +3,14 @@ import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppService } from './app.service';
 import { EstudianteModule } from './estudiante/estudiante.module';
-import { ProyectoModule } from './proyecto/proyecto.module';
-import { ProfesorModule } from './profesor/profesor.module';
-import { EvaluacionModule } from './evaluacion/evaluacion.module';
-import { ProyectoEntity } from './proyecto/proyecto.entity/proyecto.entity';
 import { EstudianteEntity } from './estudiante/estudiante.entity/estudiante.entity';
-import { ProfesorEntity } from './profesor/profesor.entity/profesor.entity';
-import { EvaluacionEntity } from './evaluacion/evaluacion.entity/evaluacion.entity';
+import { ActividadModule } from './actividad/actividad.module';
+import { ResenaModule } from './resena/resena.module';
+import { ResenaEntity } from './resena/resena.entity/resena.entity';
+import { ActividadEntity } from './actividad/actividad.entity/actividad.entity';
 
 @Module({
-  imports: [EstudianteModule, ProyectoModule, ProfesorModule, EvaluacionModule,
+  imports: [EstudianteModule, ActividadModule, ResenaModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -20,10 +18,12 @@ import { EvaluacionEntity } from './evaluacion/evaluacion.entity/evaluacion.enti
       username: 'postgres',
       password: 'postgres',
       database: 'proyecto',
-      entities: [EstudianteEntity, ProyectoEntity, ProfesorEntity, EvaluacionEntity],
+      entities: [EstudianteEntity, ActividadEntity, ResenaEntity],
       dropSchema: true,
       synchronize: true
     }),
+    ActividadModule,
+    ResenaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

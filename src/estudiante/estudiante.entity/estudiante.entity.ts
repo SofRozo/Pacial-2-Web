@@ -1,23 +1,27 @@
-import { ProyectoEntity } from 'src/proyecto/proyecto.entity/proyecto.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-
+import { ResenaEntity } from 'src/resena/resena.entity/resena.entity';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { ActividadEntity } from 'src/actividad/actividad.entity/actividad.entity';
 @Entity()
 export class EstudianteEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column()
-  cedula: number;
+  cedula: number; //
   @Column()
-  nombre: string;
+  nombre: string; //
   @Column()
-  semestre: number;
+  correo: string; //
   @Column()
-  programa: string;
+  semestre: number;//
   @Column()
-  promedio: number;
-  // Asociaciones
-  //Tiene una de uno a muchos con proyecto (). El estudiante maneja los proyectos. 
-   @OneToMany(() => ProyectoEntity, proyecto => proyecto.estudiante)
-   proyectos: ProyectoEntity[];
+  programa: string;//
+
+  //Asociaciones
+   @OneToMany(() => ResenaEntity, resena => resena.estudiante)
+   resenas: ResenaEntity[];
+
+   @ManyToMany(() => ActividadEntity, actividad => actividad.estudiantes)
+   @JoinTable()
+   actividades: ActividadEntity[];
 
 }
