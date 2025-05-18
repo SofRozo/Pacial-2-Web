@@ -195,7 +195,8 @@
 							"path": [
 								"estudiantes"
 							]
-						}
+						},
+						"description": "Una de las reglas de negocio solicitaba que el semestre del estudiante tenía que estar entre 1 y 10. Por este motivo añadí la siguiente prueba."
 					},
 					"response": [
 						{
@@ -428,7 +429,8 @@
 								"inscribir",
 								"{{actividadId2}}"
 							]
-						}
+						},
+						"description": "Este endpoint fue específico para que un estudiante estuviese inscrito en una actividad, cuyo máximo cupo era 1. Esto fue necesario para una prueba posterior."
 					},
 					"response": [
 						{
@@ -541,7 +543,8 @@
 								"inscribir",
 								"{{actividadId}}"
 							]
-						}
+						},
+						"description": "Esta prueba era necesaria para verlificar la lógica. El sistema no debería dejar que un estudiante que no existe en los registros se inscriba en una actividad."
 					},
 					"response": [
 						{
@@ -654,7 +657,8 @@
 								"inscribir",
 								"00000000-0000-0000-0000-000000000000"
 							]
-						}
+						},
+						"description": "Ahora bien, tampoco debemos permitir que un estudiante se inscriba en una actividad que realmente no existe."
 					},
 					"response": [
 						{
@@ -768,7 +772,8 @@
 								"inscribir",
 								"{{actividadId2}}"
 							]
-						}
+						},
+						"description": "Como se indicó en las instrucciones, una actividad tiene 3 estados posibles, 0 (abierta), 1(Cerrada), 2(Finalizada). El sistema debe ser capaz de enviar una alerta cuando un estudiante intenta escribirse a una actividad que ya cerró."
 					},
 					"response": [
 						{
@@ -1025,7 +1030,8 @@
 								"estudiantes",
 								"{{estudianteId}}"
 							]
-						}
+						},
+						"description": "En este sistema los errores deben ser manejados correctamente. Si el estudiante no existe, debe dejarlo saber."
 					},
 					"response": [
 						{
@@ -1297,7 +1303,8 @@
 									"disabled": true
 								}
 							]
-						}
+						},
+						"description": "Como mencionamos, para validar que un estudiante NO se pueda inscribir a una actividad finalizada y al mismo tiempo para verificar si se puede cambiar el estado de una actividad, era necesaria la creación de esta prueba."
 					},
 					"response": [
 						{
@@ -1423,7 +1430,8 @@
 							"path": [
 								"actividades"
 							]
-						}
+						},
+						"description": "En la creación se debe validar que el título tenga una longitud mínima de 15  \ncáracteres y no puede tener simbolos."
 					},
 					"response": [
 						{
@@ -1641,7 +1649,8 @@
 							"path": [
 								"actividades"
 							]
-						}
+						},
+						"description": "Esta prueba soporta la posibilidad que al usuario se le olvide digitar la fecha. Debe notificarselo y manejar el error."
 					},
 					"response": [
 						{
@@ -1887,7 +1896,8 @@
 								"{{actividadId2}}",
 								"estado"
 							]
-						}
+						},
+						"description": "En este caso, utilizamos la actividad cuya máxima ocupación era de un estudiante. De esta forma, pudimos cambiar el estado y probar el método de estudiante (para que no le dejara inscribirse a una actividad ya cerrada)"
 					},
 					"response": [
 						{
@@ -2151,7 +2161,8 @@
 								"{{actividadId}}",
 								"resenas"
 							]
-						}
+						},
+						"description": "Una de las reglas de negocio indica que, si la actividad aún no ha finalizado, no pueden realizar reseñas. Debemos constatar que esta regla sea soportada."
 					},
 					"response": [
 						{
