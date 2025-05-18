@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { EstudianteEntity } from 'src/estudiante/estudiante.entity/estudiante.entity';
-import { ResenaEntity } from 'src/resena/resena.entity/resena.entity';
+import { EstudianteEntity } from '../../estudiante/estudiante.entity/estudiante.entity';
+import { ResenaEntity } from '../../resena/resena.entity/resena.entity';
 @Entity()
 export class ActividadEntity {
     @PrimaryGeneratedColumn('uuid')
