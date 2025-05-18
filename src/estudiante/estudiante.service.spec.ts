@@ -29,7 +29,7 @@ describe('EstudianteService', () => {
         },
         {
           provide: getRepositoryToken(ActividadEntity),
-          useValue: createMockRepo<ActividadEntity>(), // won't be injected directly
+          useValue: createMockRepo<ActividadEntity>(), 
         },
       ],
     }).compile();
@@ -38,7 +38,7 @@ describe('EstudianteService', () => {
     estRepo = module.get<MockRepo<EstudianteEntity>>(getRepositoryToken(EstudianteEntity));
     actRepo = module.get<MockRepo<ActividadEntity>>(getRepositoryToken(ActividadEntity));
 
-    // mock the manager.getRepository to return our actividad repo
+
     (estRepo as any).manager = {
       getRepository: () => actRepo,
     };
