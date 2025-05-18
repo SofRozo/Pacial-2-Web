@@ -30,19 +30,30 @@ export class ActividadController {
 
   @Get()
   async listarPorFecha(
-    @Query('fecha') fecha: string    
+    @Query('fecha') fecha?: string   
   ): Promise<ActividadDTO[]> {
     if (!fecha) {
       throw new BadRequestException(
         'El parámetro “fecha” (YYYY-MM-DD) es obligatorio'
       );
     }
-    const lista = await this.actividadService.findAllActividadesByDate(fecha);
+
+    const f = fecha.trim();
+    if (!f) {
+      throw new BadRequestException(
+        'El parámetro “fecha” (YYYY-MM-DD) es obligatorio'
+      );
+    }
+
+  
+    const lista = await this.actividadService.findAllActividadesByDate(f);
     return lista.map(a => this.toDTO(a));
   }
 
 
-  /** Mapper interno de Entity → DTO */
+
+
+  /** Mapper Entity → DTO */
   private toDTO(entity: ActividadEntity): ActividadDTO {
     const { id, titulo, fecha, cupoMaximo, estado } = entity;
     return { id, titulo, fecha, cupoMaximo, estado };

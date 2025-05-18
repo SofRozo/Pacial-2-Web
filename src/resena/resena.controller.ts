@@ -1,50 +1,48 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import {Controller, Post,Get, Param, Body, UsePipes, ValidationPipe, NotFoundException,} from '@nestjs/common';
 import { ResenaService } from './resena.service';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { ResenaEntity }     from './resena.entity/resena.entity';
-import { ActividadEntity }  from '../actividad/actividad.entity/actividad.entity';
-import { EstudianteEntity } from '../estudiante/estudiante.entity/estudiante.entity';
-import { Repository, ObjectLiteral } from 'typeorm';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { AgregarResenaDTO } from './dto/agregar-resena.dto';
+import { ResenaDTO }       from './dto/resena.dto';
+import { ResenaEntity }    from './resena.entity/resena.entity';
+import { ParseUUIDPipe } from '@nestjs/common';
+@Controller()
+export class ResenaController {
+  constructor(private readonly resenaService: ResenaService) {}
 
-type MockRepo<T extends ObjectLiteral = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
+  @Post('estudiantes/:estudianteId/actividades/:actividadId/resenas')
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  async agregarResena(
+    @Param('estudianteId') estudianteId: string,
+    @Param('actividadId') actividadId: string,
+    @Body() dto: AgregarResenaDTO
+  ): Promise<ResenaDTO> {
+    const entidad = await this.resenaService.agregarResena(
+      estudianteId,
+      actividadId,
+      dto
+    );
+    return this.toDTO(entidad);
+  }
 
-const createMockRepo = <T extends ObjectLiteral = any>(): MockRepo<T> => ({
-  findOne: jest.fn(),
-  create: jest.fn(),
-  save: jest.fn(),
-});
 
-describe('ResenaService', () => {
-  let service: ResenaService;
-  let rRepo: MockRepo<ResenaEntity>;
-  let aRepo: MockRepo<ActividadEntity>;
-  let eRepo: MockRepo<EstudianteEntity>;
+  @Get('resenas/:id')
+  async findById(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string
+  ): Promise<ResenaDTO> {
+    const entidad = await this.resenaService.findClaseById(id);
+    return this.toDTO(entidad);
+  }
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        ResenaService,
-        {
-          provide: getRepositoryToken(ResenaEntity),
-          useValue: createMockRepo<ResenaEntity>(),
-        },
-        {
-          provide: getRepositoryToken(ActividadEntity),
-          useValue: createMockRepo<ActividadEntity>(),
-        },
-        {
-          provide: getRepositoryToken(EstudianteEntity),
-          useValue: createMockRepo<EstudianteEntity>(),
-        },
-      ],
-    }).compile();
 
-    service = module.get<ResenaService>(ResenaService);
-    rRepo = module.get<MockRepo<ResenaEntity>>(getRepositoryToken(ResenaEntity));
-    aRepo = module.get<MockRepo<ActividadEntity>>(getRepositoryToken(ActividadEntity));
-    eRepo = module.get<MockRepo<EstudianteEntity>>(getRepositoryToken(EstudianteEntity));
-  });
-
-  // Aquí tus tests de agregarResena y findClaseById...
-});
+  /** Mapper Entity → DTO */
+  private toDTO(entity: ResenaEntity): ResenaDTO {
+    const { id, comentario, calificacion, fecha, estudiante, actividad } = entity;
+    return {
+      id,
+      comentario,
+      calificacion,
+      fecha,
+      estudianteId: estudiante.id,
+      actividadId:  actividad.id,
+    };
+  }
+}

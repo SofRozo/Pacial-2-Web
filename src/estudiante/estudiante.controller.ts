@@ -38,7 +38,7 @@ export class EstudianteController {
     );
     return { mensaje };
   }
-
+  /** Mapper Entity → DTO */
   private toDTO(entity: EstudianteEntity): EstudianteDTO {
     const { id, cedula, nombre, correo, semestre, programa } = entity;
     return { id, cedula, nombre, correo, semestre, programa };
