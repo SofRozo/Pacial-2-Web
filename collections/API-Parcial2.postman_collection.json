@@ -1,0 +1,2341 @@
+{
+	"info": {
+		"_postman_id": "abb82f2d-47d5-4d43-97f1-15d0b51cf7e2",
+		"name": "API-Parcial2",
+		"description": "A continuación observamos la documentación del API para el Parcial 2 de la asignatura Programación con Tecnologías Web.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29484918"
+	},
+	"item": [
+		{
+			"name": "Estudiantes",
+			"item": [
+				{
+					"name": "Crear Estudiante",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {\r",
+									"  pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has an id\", () => {\r",
+									"  const data = pm.response.json();\r",
+									"  pm.expect(data).to.have.property(\"id\");\r",
+									"});\r",
+									"\r",
+									"const data = pm.response.json();\r",
+									"pm.environment.set(\"estudianteId\", data.id);\r",
+									"\r",
+									"pm.test(\"Cedula OK\", () => {\r",
+									"  pm.expect(data.cedula).to.eql(12345);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"cedula\": 12345,\r\n  \"nombre\": \"Juan Pérez\",\r\n  \"correo\": \"juan.perez@example.com\",\r\n  \"semestre\": 5,\r\n  \"programa\": \"Ingeniería\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/estudiantes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"estudiantes"
+							]
+						},
+						"description": "Crea un nuevo estudiante con los campos:\n\n- `cedula` (número de identificación)\n    \n- `nombre`\n    \n- `correo` (valida formato)\n    \n- `semestre` (entre 1 y 10)\n    \n- `programa`\n    \n    Devuelve **201 Created** con el objeto completo (`id`, `cedula`, `nombre`, etc.) o **400 Bad Request** si falla la validación."
+					},
+					"response": [
+						{
+							"name": "Crear Estudiante",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"cedula\": 12345,\r\n  \"nombre\": \"Juan Pérez\",\r\n  \"correo\": \"juan.perez@example.com\",\r\n  \"semestre\": 5,\r\n  \"programa\": \"Ingeniería\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/estudiantes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"estudiantes"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "155"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"9b-qMzD6Yc9JKmfOYwlVtBeU8BAkVs\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 18 May 2025 22:01:30 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"3898ee95-c597-4ff5-8b99-7db261a0388f\",\n    \"cedula\": 12345,\n    \"nombre\": \"Juan Pérez\",\n    \"correo\": \"juan.perez@example.com\",\n    \"semestre\": 5,\n    \"programa\": \"Ingeniería\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Crear Estudiante - Semestre Inválido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"  pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Error message es 'El semestre debe estar entre 1 y 10'\", () => {\r",
+									"  const err = pm.response.json();\r",
+									"  pm.expect(err.message).to.eql(\"El semestre debe estar entre 1 y 10\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"cedula\": 12345,\r\n  \"nombre\": \"Juan Pérez\",\r\n  \"correo\": \"juan.perez@example.com\",\r\n  \"semestre\": 0,\r\n  \"programa\": \"Ingeniería\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/estudiantes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"estudiantes"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Crear Estudiante - Semestre Inválido",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"cedula\": 12345,\r\n  \"nombre\": \"Juan Pérez\",\r\n  \"correo\": \"juan.perez@example.com\",\r\n  \"semestre\": 0,\r\n  \"programa\": \"Ingeniería\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/estudiantes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"estudiantes"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "87"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"57-5RbSI0wA58+AdzqMhz4HT4lEDtQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 18 May 2025 21:48:27 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": [\n        \"semestre must not be less than 1\"\n    ],\n    \"error\": \"Bad Request\",\n    \"statusCode\": 400\n}"
+						}
+					]
+				},
+				{
+					"name": "Inscribir Estudiante - Ok",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Mensaje es 'Inscripción exitosa'\", () => {\r",
+									"  const body = pm.response.json();\r",
+									"  pm.expect(body).to.have.property(\"mensaje\", \"Inscripción exitosa\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/estudiantes/{{estudianteId}}/inscribir/{{actividadId2}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"estudiantes",
+								"{{estudianteId}}",
+								"inscribir",
+								"{{actividadId2}}"
+							]
+						},
+						"description": "Inscribe al estudiante en la actividad indicada.\n\n- Requiere que la actividad exista y esté en estado “abierta” (0).\n    \n- Controla cupo máximo y evita inscripciones duplicadas.  \n      \n    Responde **200 OK** con `{ mensaje: \"Inscripción exitosa\" }` o **4xx** con el motivo del error."
+					},
+					"response": [
+						{
+							"name": "Crear Estudiante Copy",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/estudiantes//inscribir/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"estudiantes",
+										"",
+										"inscribir",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "34"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"22-eacQQvP9cY7SfUCsU0Nad2pZslI\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 18 May 2025 21:48:57 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"mensaje\": \"Inscripción exitosa\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Inscribir Estudiante 2 - Ok Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Mensaje es 'Inscripción exitosa'\", () => {\r",
+									"  const body = pm.response.json();\r",
+									"  pm.expect(body).to.have.property(\"mensaje\", \"Inscripción exitosa\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/estudiantes/{{estudianteId}}/inscribir/{{actividadId2}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"estudiantes",
+								"{{estudianteId}}",
+								"inscribir",
+								"{{actividadId2}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Inscribir Estudiante - Ok Copy",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/estudiantes//inscribir/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"estudiantes",
+										"",
+										"inscribir",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "34"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"22-eacQQvP9cY7SfUCsU0Nad2pZslI\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 18 May 2025 21:49:00 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"mensaje\": \"Inscripción exitosa\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Inscribir Estudiante - Estudiante No existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", () => {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"pm.test(\"Mensaje 'Estudiante no encontrado'\", () => {\r",
+									"  const err = pm.response.json();\r",
+									"  pm.expect(err.message).to.eql(\"Estudiante no encontrado\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/estudiantes/00000000-0000-0000-0000-000000000000/inscribir/{{actividadId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"estudiantes",
+								"00000000-0000-0000-0000-000000000000",
+								"inscribir",
+								"{{actividadId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Inscribir Estudiante - Ok Copy",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/estudiantes/00000000-0000-0000-0000-000000000000/inscribir/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"estudiantes",
+										"00000000-0000-0000-0000-000000000000",
+										"inscribir",
+										""
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "75"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4b-97tBEvmKynROkZTgxExK8u/HvOI\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 18 May 2025 21:49:04 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Estudiante no encontrado\",\n    \"error\": \"Not Found\",\n    \"statusCode\": 404\n}"
+						}
+					]
+				},
+				{
+					"name": "Inscribir Estudiante - Actividad no existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", () => {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"pm.test(\"Mensaje 'Actividad no encontrada'\", () => {\r",
+									"  const err = pm.response.json();\r",
+									"  pm.expect(err.message).to.eql(\"Actividad no encontrada\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/estudiantes/{{estudianteId}}/inscribir/00000000-0000-0000-0000-000000000000",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"estudiantes",
+								"{{estudianteId}}",
+								"inscribir",
+								"00000000-0000-0000-0000-000000000000"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Inscribir Estudiante - Estudiante No existe Copy",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/estudiantes//inscribir/00000000-0000-0000-0000-000000000000",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"estudiantes",
+										"",
+										"inscribir",
+										"00000000-0000-0000-0000-000000000000"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "74"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4a-gOVJntGPbVHG/KtyYHFrNmRygf0\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 18 May 2025 21:49:08 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Actividad no encontrada\",\n    \"error\": \"Not Found\",\n    \"statusCode\": 404\n}"
+						}
+					]
+				},
+				{
+					"name": "Inscribir Estudiante - Actividad cerrada",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"  pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Mensaje de error es 'La actividad no está disponible para inscripción'\", () => {\r",
+									"  const err = pm.response.json();\r",
+									"  pm.expect(err.message).to.eql(\"La actividad no está disponible para inscripción\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/estudiantes/{{estudianteId}}/inscribir/{{actividadId2}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"estudiantes",
+								"{{estudianteId}}",
+								"inscribir",
+								"{{actividadId2}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Inscribir Estudiante - Actividad no existe Copy",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/estudiantes//inscribir/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"estudiantes",
+										"",
+										"inscribir",
+										""
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "103"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"67-5qam0j3gmlCdiTo1EIsd9iU/s1Y\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 18 May 2025 21:49:40 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"La actividad no está disponible para inscripción\",\n    \"error\": \"Bad Request\",\n    \"statusCode\": 400\n}"
+						}
+					]
+				},
+				{
+					"name": "Obtener Estudiante - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La respuesta contiene el mismo id\", () => {\r",
+									"  const data = pm.response.json();\r",
+									"  pm.expect(data.id).to.eql(pm.variables.get(\"estudianteId\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Cedula es un número\", () => {\r",
+									"  const data = pm.response.json();\r",
+									"  pm.expect(data.cedula).to.be.a(\"number\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"cedula\": 12345,\r\n  \"nombre\": \"Juan Pérez\",\r\n  \"correo\": \"juan.perez@example.com\",\r\n  \"semestre\": 0,\r\n  \"programa\": \"Ingeniería\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/estudiantes/{{estudianteId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"estudiantes",
+								"{{estudianteId}}"
+							]
+						},
+						"description": "Obtiene los datos de un estudiante por su `id` (UUID).\n\nDevuelve **200 OK** con el estudiante o **404 Not Found** si no existe."
+					},
+					"response": [
+						{
+							"name": "Crear Estudiante - Semestre Inválido Copy",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/estudiantes/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"estudiantes",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "155"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"9b-Lqq8r2CwJVmzGt+kSQW0Ocuy54k\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 18 May 2025 21:49:45 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"2110b15f-74ef-471f-b077-6f53397f10ab\",\n    \"cedula\": 12345,\n    \"nombre\": \"Juan Pérez\",\n    \"correo\": \"juan.perez@example.com\",\n    \"semestre\": 5,\n    \"programa\": \"Ingeniería\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Obtener Estudiante - Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"La respuesta contiene el mismo id\", () => {\r",
+									"  const data = pm.response.json();\r",
+									"  pm.expect(data.id).to.eql(pm.variables.get(\"estudianteId\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Cedula es un número\", () => {\r",
+									"  const data = pm.response.json();\r",
+									"  pm.expect(data.cedula).to.be.a(\"number\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"cedula\": 12345,\r\n  \"nombre\": \"Juan Pérez\",\r\n  \"correo\": \"juan.perez@example.com\",\r\n  \"semestre\": 0,\r\n  \"programa\": \"Ingeniería\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/estudiantes/{{estudianteId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"estudiantes",
+								"{{estudianteId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Obtener Estudiante - OK Copy",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/estudiantes/00000000-0000-0000-0000-000000000000",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"estudiantes",
+										"00000000-0000-0000-0000-000000000000"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "75"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4b-97tBEvmKynROkZTgxExK8u/HvOI\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 18 May 2025 21:49:48 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Estudiante no encontrado\",\n    \"error\": \"Not Found\",\n    \"statusCode\": 404\n}"
+						}
+					]
+				}
+			],
+			"description": "Este grupo de operaciones permite gestionar el recurso **Estudiante**, registrando nuevos alumnos, consultando su información y realizando la inscripción de un estudiante en una actividad"
+		},
+		{
+			"name": "Actividades",
+			"item": [
+				{
+					"name": "Crear Actividad Ok",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {\r",
+									"  pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has id\", () => {\r",
+									"  const data = pm.response.json();\r",
+									"  pm.expect(data).to.have.property(\"id\");\r",
+									"});\r",
+									"\r",
+									"const actividad = pm.response.json();\r",
+									"pm.environment.set(\"actividadId\", actividad.id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"titulo\": \"Actividad de prueba válida\",\r\n  \"fecha\": \"2025-05-18\",\r\n  \"cupoMaximo\": 10\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/actividades",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"actividades"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Crea una actividad nueva con:\n\n- `titulo` (mínimo 15 caracteres, sin símbolos)\n    \n- `fecha` (YYYY-MM-DD)\n    \n- `cupoMaximo` (entero)  \n      \n    El campo `estado` se inicializa en 0 (abierta). Retorna **201 Created** o **400 Bad Request**."
+					},
+					"response": [
+						{
+							"name": "Crear Actividad Ok",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"titulo\": \"Actividad de prueba válida\",\r\n  \"fecha\": \"2025-05-18\",\r\n  \"cupoMaximo\": 10\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/actividades",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"actividades"
+									],
+									"query": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "132"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"84-j/woXTfqXzapOad+0JuHN/dIG8U\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 18 May 2025 21:48:45 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"8aa2fd6d-0051-4858-8a24-c9ac10aea71f\",\n    \"titulo\": \"Actividad de prueba válida\",\n    \"fecha\": \"2025-05-18\",\n    \"cupoMaximo\": 10,\n    \"estado\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "Crear Actividad Ok - Cambiar estado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {\r",
+									"  pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has id\", () => {\r",
+									"  const data = pm.response.json();\r",
+									"  pm.expect(data).to.have.property(\"id\");\r",
+									"});\r",
+									"\r",
+									"const actividad = pm.response.json();\r",
+									"pm.environment.set(\"actividadId2\", actividad.id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"titulo\": \"Actividad de prueba válida\",\r\n  \"fecha\": \"2025-05-18\",\r\n  \"cupoMaximo\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/actividades",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"actividades"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Crear Actividad Ok Copy",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"titulo\": \"Actividad de prueba válida\",\r\n  \"fecha\": \"2025-05-18\",\r\n  \"cupoMaximo\": 1\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/actividades",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"actividades"
+									],
+									"query": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "131"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"83-Q6Gwg7aBFeXXWqg7JYC8P9XnclA\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 18 May 2025 21:48:48 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"0db6d17e-fda9-47f0-be19-d0c3cff33213\",\n    \"titulo\": \"Actividad de prueba válida\",\n    \"fecha\": \"2025-05-18\",\n    \"cupoMaximo\": 1,\n    \"estado\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "Crear Actividad - Título inválido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"  pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Devuelve mensaje de longitud\", () => {\r",
+									"  const err = pm.response.json();\r",
+									"  pm.expect(err.message).to.be.an(\"array\").with.lengthOf(1);\r",
+									"  pm.expect(err.message[0]).to.eql(\"El título debe tener mínimo 15 caracteres.\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"titulo\": \"corto\",\r\n  \"fecha\": \"2025-05-18\",\r\n  \"cupoMaximo\": 5\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/actividades",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"actividades"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Crear Actividad Ok Copy",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"titulo\": \"corto\",\r\n  \"fecha\": \"2025-05-18\",\r\n  \"cupoMaximo\": 5\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/actividades",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"actividades"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "99"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"63-heLqn3vGfoPunVmxunO/aVi51uw\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 18 May 2025 21:48:52 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": [\n        \"El título debe tener mínimo 15 caracteres.\"\n    ],\n    \"error\": \"Bad Request\",\n    \"statusCode\": 400\n}"
+						}
+					]
+				},
+				{
+					"name": "Listar actividades por fecha",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Devuelve un array de actividades\", () => {\r",
+									"  const arr = pm.response.json();\r",
+									"  pm.expect(arr).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Cada elemento tiene id, titulo, fecha, cupoMaximo y estado\", () => {\r",
+									"  const arr = pm.response.json();\r",
+									"  if (arr.length > 0) {\r",
+									"    const act = arr[0];\r",
+									"    pm.expect(act).to.have.keys([\"id\",\"titulo\",\"fecha\",\"cupoMaximo\",\"estado\"]);\r",
+									"  }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/actividades?fecha=2025-05-18\n",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"actividades"
+							],
+							"query": [
+								{
+									"key": "fecha",
+									"value": "2025-05-18\n"
+								}
+							]
+						},
+						"description": "Lista todas las actividades que ocurren en la fecha indicada.\n\nParámetro `fecha` obligatorio.\n\nRetorna **200 OK** con un array de objetos `{ id, titulo, fecha, cupoMaximo, estado }` o **400 Bad Request** si falta `fecha`."
+					},
+					"response": [
+						{
+							"name": "Listar actividades por fecha",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/actividades?fecha=2025-05-18\n",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"actividades"
+									],
+									"query": [
+										{
+											"key": "fecha",
+											"value": "2025-05-18\n"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "266"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"10a-7BL6f0agXjdVA8k8nIbk1XKD6uY\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 18 May 2025 21:20:06 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"6b1d5941-d3e0-4161-96c7-f6ef52d26823\",\n        \"titulo\": \"Actividad de prueba válida\",\n        \"fecha\": \"2025-05-18\",\n        \"cupoMaximo\": 10,\n        \"estado\": 0\n    },\n    {\n        \"id\": \"55121426-327a-41d3-b52e-4aa86a5bba80\",\n        \"titulo\": \"Actividad de prueba válida\",\n        \"fecha\": \"2025-05-18\",\n        \"cupoMaximo\": 1,\n        \"estado\": 0\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Listar actividades por fecha - Missing Fecha",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"  pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Error message es 'El parámetro “fecha” (YYYY-MM-DD) es obligatorio'\", () => {\r",
+									"  const err = pm.response.json();\r",
+									"  pm.expect(err.message).to.eql(\r",
+									"    'El parámetro “fecha” (YYYY-MM-DD) es obligatorio'\r",
+									"  );\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/actividades",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"actividades"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Listar actividades por fecha Copy",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/actividades",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"actividades"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "106"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"6a-qZ2RdFK36eVpfxlnYyLfVZuQr38\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 18 May 2025 21:20:09 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"El parámetro “fecha” (YYYY-MM-DD) es obligatorio\",\n    \"error\": \"Bad Request\",\n    \"statusCode\": 400\n}"
+						}
+					]
+				},
+				{
+					"name": "Cambiar de estado - Falla por no ocupación",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"  pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Mensaje de error correcto\", () => {\r",
+									"  const err = pm.response.json();\r",
+									"  pm.expect(err.message).to.eql(\r",
+									"    \"Solo se puede cerrar si el 80% del cupo está lleno\"\r",
+									"  );\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"estado\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/actividades/{{actividadId}}/estado",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"actividades",
+								"{{actividadId}}",
+								"estado"
+							]
+						},
+						"description": "Modifica únicamente el estado (`0`\\=abierta, `1`\\=cerrada, `2`\\=finalizada) de la actividad:\n\n- Para cerrar (1) debe haber al menos 80% de inscripciones.\n    \n- Para finalizar (2) el cupo debe estar lleno.  \n      \n    Devuelve **200 OK** con la actividad actualizada, **400** si viola reglas, o **404** si no existe."
+					},
+					"response": [
+						{
+							"name": "Inscribir Estudiante - Actividad cerrada Copy",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"estado\": 1\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/actividades//estado",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"actividades",
+										"",
+										"estado"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "104"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"68-SHIZjZsBxJBZ3+v+AkIj6hYpbrQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 18 May 2025 21:49:32 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Solo se puede cerrar si el 80% del cupo está lleno\",\n    \"error\": \"Bad Request\",\n    \"statusCode\": 400\n}"
+						}
+					]
+				},
+				{
+					"name": "Cambiar de estado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Estado cambió a 2\", () => {\r",
+									"  const data = pm.response.json();\r",
+									"  pm.expect(data.estado).to.eql(2);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"estado\": 2\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/actividades/{{actividadId2}}/estado",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"actividades",
+								"{{actividadId2}}",
+								"estado"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Cambiar de estado - Falla por no ocupación Copy",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"estado\": 2\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/actividades//estado",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"actividades",
+										"",
+										"estado"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "131"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"83-rrmnLO5bT4FPJVCxv+j94IfyUz4\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 18 May 2025 21:49:36 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"0db6d17e-fda9-47f0-be19-d0c3cff33213\",\n    \"titulo\": \"Actividad de prueba válida\",\n    \"fecha\": \"2025-05-18\",\n    \"cupoMaximo\": 1,\n    \"estado\": 2\n}"
+						}
+					]
+				}
+			],
+			"description": "Conjunto de endpoints para crear y administrar actividades académicas, así como para consultarlas según fecha y cambiar su estado interno."
+		},
+		{
+			"name": "Reseñas",
+			"item": [
+				{
+					"name": "Crear Reseña - Actividad Finalizada",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"201 Created\", () => pm.response.to.have.status(201));\r",
+									"\r",
+									"const resena = pm.response.json();\r",
+									"pm.environment.set(\"resenaId\", resena.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"comentario\": \"Muy buena actividad, aprendí mucho.\",\r\n  \"calificacion\": 5,\r\n  \"fecha\": \"2025-06-02\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/estudiantes/{{estudianteId}}/actividades/{{actividadId2}}/resenas",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"estudiantes",
+								"{{estudianteId}}",
+								"actividades",
+								"{{actividadId2}}",
+								"resenas"
+							]
+						},
+						"description": "Crea una reseña con:\n\n- `comentario`\n    \n- `calificacion` (entero)\n    \n- `fecha` (YYYY-MM-DD)  \n      \n    Requiere que la actividad exista, esté en estado `2` (finalizada) y que el estudiante haya estado inscrito.  \n      \n    Devuelve **201 Created** con la reseña o **4xx** explicando el fallo."
+					},
+					"response": [
+						{
+							"name": "Crear Reseña - Actividad No Finalizada",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"comentario\": \"Muy buena actividad, aprendí mucho.\",\r\n  \"calificacion\": 5,\r\n  \"fecha\": \"2025-06-02\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/estudiantes//actividades//resenas",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"estudiantes",
+										"",
+										"actividades",
+										"",
+										"resenas"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "242"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"f2-1ImyqbIFTfeRuEVGkFpwMPX+Uh4\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 18 May 2025 21:22:12 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"fa9c4b06-8b99-42ec-b364-78c8a362a7d4\",\n    \"comentario\": \"Muy buena actividad, aprendí mucho.\",\n    \"calificacion\": 5,\n    \"fecha\": \"2025-06-02\",\n    \"estudianteId\": \"5c5a424c-c7ec-4377-9073-4d48807adcc9\",\n    \"actividadId\": \"55121426-327a-41d3-b52e-4aa86a5bba80\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Crear Reseña - Actividad No Finalizada",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"  pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Mensaje 'Solo se pueden agregar reseñas a actividades finalizadas'\", () => {\r",
+									"  const err = pm.response.json();\r",
+									"  pm.expect(err.message).to.eql(\r",
+									"    \"Solo se pueden agregar reseñas a actividades finalizadas\"\r",
+									"  );\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"comentario\": \"Probando reseña negativa\",\r\n  \"calificacion\": 3,\r\n  \"fecha\": \"2025-06-02\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/estudiantes/{{estudianteId}}/actividades/{{actividadId}}/resenas",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"estudiantes",
+								"{{estudianteId}}",
+								"actividades",
+								"{{actividadId}}",
+								"resenas"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Crear Reseña - Actividad Finalizada Copy",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"comentario\": \"Probando reseña negativa\",\r\n  \"calificacion\": 3,\r\n  \"fecha\": \"2025-06-02\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/estudiantes//actividades//resenas",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"estudiantes",
+										"",
+										"actividades",
+										"",
+										"resenas"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "110"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"6e-rs6jU6mfsj86Q6kzWTYsaKqn1jw\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 18 May 2025 21:22:15 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Solo se pueden agregar reseñas a actividades finalizadas\",\n    \"error\": \"Bad Request\",\n    \"statusCode\": 400\n}"
+						}
+					]
+				},
+				{
+					"name": "Obtener Reseña – OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Respuesta tiene campos correctos\", () => {\r",
+									"  const body = pm.response.json();\r",
+									"  pm.expect(body).to.have.keys([\r",
+									"    \"id\",\r",
+									"    \"comentario\",\r",
+									"    \"calificacion\",\r",
+									"    \"fecha\",\r",
+									"    \"estudianteId\",\r",
+									"    \"actividadId\"\r",
+									"  ]);\r",
+									"  pm.expect(body.id).to.eql(pm.environment.get(\"resenaId\"));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/resenas/{{resenaId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"resenas",
+								"{{resenaId}}"
+							]
+						},
+						"description": "Recupera una reseña por su `id`.  \n  \nIncluye `estudianteId` y `actividadId`.  \n  \nResponde **200 OK** con el objeto completo o **404 Not Found** si no existe."
+					},
+					"response": [
+						{
+							"name": "New Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/resenas/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"resenas",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "242"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"f2-1ImyqbIFTfeRuEVGkFpwMPX+Uh4\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 18 May 2025 21:26:59 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"fa9c4b06-8b99-42ec-b364-78c8a362a7d4\",\n    \"comentario\": \"Muy buena actividad, aprendí mucho.\",\n    \"calificacion\": 5,\n    \"fecha\": \"2025-06-02\",\n    \"estudianteId\": \"5c5a424c-c7ec-4377-9073-4d48807adcc9\",\n    \"actividadId\": \"55121426-327a-41d3-b52e-4aa86a5bba80\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Endpoints para agregar y consultar reseñas que dejan los estudiantes tras participar en actividades finalizadas."
+		}
+	]
+}
